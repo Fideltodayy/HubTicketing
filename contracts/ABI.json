@@ -1,0 +1,910 @@
+CONTRACT_ADDDRESS = 0xeC0858db3B931382945E92383d279E825a0F4BeB
+
+CONTRACT_ABI = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			}
+		],
+		"name": "DuplicateEmailAddress",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "wallet",
+				"type": "address"
+			}
+		],
+		"name": "DuplicateWalletAddress",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "InvalidEmailFormat",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "InvalidNameFormat",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "InvalidStudentId",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "OwnableInvalidOwner",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "OwnableUnauthorizedAccount",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "studentId",
+				"type": "uint256"
+			}
+		],
+		"name": "StudentAlreadyRegistered",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "StudentNotFound",
+		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "credentialId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "studentId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "studentFirstName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "studentLastName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "studentEmail",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum ALXTechHubAccess.Program",
+				"name": "program",
+				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum ALXTechHubAccess.TimeZone",
+				"name": "timezone",
+				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "expirationTime",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "credentialHash",
+				"type": "bytes32"
+			}
+		],
+		"name": "CredentialIssued",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "credentialId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "studentFirstName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "studentLastName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "studentEmail",
+				"type": "string"
+			}
+		],
+		"name": "CredentialRevoked",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_studentId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum ALXTechHubAccess.Program",
+				"name": "_program",
+				"type": "uint8"
+			},
+			{
+				"internalType": "enum ALXTechHubAccess.TimeZone",
+				"name": "_timezone",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_validityPeriod",
+				"type": "uint256"
+			}
+		],
+		"name": "issueCredential",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "credentialHash",
+				"type": "bytes32"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "studentId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "studentEmail",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "studentFirstName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "studentLastName",
+						"type": "string"
+					},
+					{
+						"internalType": "enum ALXTechHubAccess.Program",
+						"name": "program",
+						"type": "uint8"
+					},
+					{
+						"internalType": "enum ALXTechHubAccess.TimeZone",
+						"name": "timezone",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "expirationTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isValid",
+						"type": "bool"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "credentialHash",
+						"type": "bytes32"
+					}
+				],
+				"internalType": "struct ALXTechHubAccess.CredentialView",
+				"name": "credentialView",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_studentAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_firstName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_lastName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_email",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_studentId",
+				"type": "uint256"
+			}
+		],
+		"name": "registerUser",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "_credentialHash",
+				"type": "bytes32"
+			}
+		],
+		"name": "revokeCredential",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "firstName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "lastName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			}
+		],
+		"name": "UserRegistered",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "credentials",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "studentId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum ALXTechHubAccess.Program",
+				"name": "program",
+				"type": "uint8"
+			},
+			{
+				"internalType": "enum ALXTechHubAccess.TimeZone",
+				"name": "timezone",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "expirationTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "isValid",
+				"type": "bool"
+			},
+			{
+				"internalType": "string",
+				"name": "studentEmail",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "studentFirstName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "studentLastName",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllStudents",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "firstName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "lastName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "email",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "studentId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isRegistered",
+						"type": "bool"
+					},
+					{
+						"internalType": "address",
+						"name": "studentsAddress",
+						"type": "address"
+					}
+				],
+				"internalType": "struct ALXTechHubAccess.StudentStruct[]",
+				"name": "",
+				"type": "tuple[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "_credentialHash",
+				"type": "bytes32"
+			}
+		],
+		"name": "getCredentialDetails",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "studentId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "studentEmail",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "studentFirstName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "studentLastName",
+						"type": "string"
+					},
+					{
+						"internalType": "enum ALXTechHubAccess.Program",
+						"name": "program",
+						"type": "uint8"
+					},
+					{
+						"internalType": "enum ALXTechHubAccess.TimeZone",
+						"name": "timezone",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "expirationTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isValid",
+						"type": "bool"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "credentialHash",
+						"type": "bytes32"
+					}
+				],
+				"internalType": "struct ALXTechHubAccess.CredentialView",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_studentId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum ALXTechHubAccess.Program",
+				"name": "_program",
+				"type": "uint8"
+			},
+			{
+				"internalType": "enum ALXTechHubAccess.TimeZone",
+				"name": "_timezone",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_expirationTime",
+				"type": "uint256"
+			}
+		],
+		"name": "getCredentialHash",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_studentId",
+				"type": "uint256"
+			}
+		],
+		"name": "getStudent",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "firstName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "lastName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "email",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "studentId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isRegistered",
+						"type": "bool"
+					},
+					{
+						"internalType": "address",
+						"name": "studentsAddress",
+						"type": "address"
+					}
+				],
+				"internalType": "struct ALXTechHubAccess.StudentStruct",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_studentId",
+				"type": "uint256"
+			}
+		],
+		"name": "getStudentCredentials",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "studentId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "studentEmail",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "studentFirstName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "studentLastName",
+						"type": "string"
+					},
+					{
+						"internalType": "enum ALXTechHubAccess.Program",
+						"name": "program",
+						"type": "uint8"
+					},
+					{
+						"internalType": "enum ALXTechHubAccess.TimeZone",
+						"name": "timezone",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "expirationTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isValid",
+						"type": "bool"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "credentialHash",
+						"type": "bytes32"
+					}
+				],
+				"internalType": "struct ALXTechHubAccess.CredentialView[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_page",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_perPage",
+				"type": "uint256"
+			}
+		],
+		"name": "getStudentsByPage",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "firstName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "lastName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "email",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "studentId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isRegistered",
+						"type": "bool"
+					},
+					{
+						"internalType": "address",
+						"name": "studentsAddress",
+						"type": "address"
+					}
+				],
+				"internalType": "struct ALXTechHubAccess.StudentStruct[]",
+				"name": "",
+				"type": "tuple[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "student",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "firstName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "lastName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "studentId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "isRegistered",
+				"type": "bool"
+			},
+			{
+				"internalType": "address",
+				"name": "studentsAddress",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "studentCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "_credentialHash",
+				"type": "bytes32"
+			}
+		],
+		"name": "verifyCredential",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "enum ALXTechHubAccess.Program",
+				"name": "",
+				"type": "uint8"
+			},
+			{
+				"internalType": "enum ALXTechHubAccess.TimeZone",
+				"name": "",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
