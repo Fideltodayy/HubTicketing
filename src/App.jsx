@@ -20,7 +20,9 @@ const App = () => {
           apiKey="3_vAqOchZPcHWK8VrICw0_Gor7CUlH97"
           chain={base}
         >
-          <AppContent />
+          <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200">
+            <AppContent />
+          </div>
         </OnchainKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
@@ -31,18 +33,19 @@ const AppContent = () => {
   const { isConnected } = useAccount();
 
   return (
-    <div className="p-6">
+    <div className="container mx-auto px-4 py-8">
       {isConnected ? (
         <TechHubProgramBooking />
       ) : (
-        <div className="flex flex-col items-center justify-center min-h-screen ">
-          <h1 className="text-4xl font-bold mb-6 text-black">
+        <div className="flex flex-col items-center justify-center min-h-screen text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-gray-800">
             Welcome to ALX Hub Ticketing Platform
           </h1>
-          <p className="text-xl mb-8 text-black">
-            Connect your smart wallet to get started
+          <p className="text-lg sm:text-xl mb-8 text-gray-600 max-w-md">
+            Connect your smart wallet to get started with booking tech programs
+            and managing your tickets.
           </p>
-          <div className="bg-white  transition-colors">
+          <div className=" rounded-lg p-6 ">
             <WalletDefault />
           </div>
         </div>

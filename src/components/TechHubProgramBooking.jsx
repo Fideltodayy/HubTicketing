@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useAccount } from "wagmi";
 import {
   Card,
@@ -22,6 +22,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { WalletDefault } from "@coinbase/onchainkit/wallet";
 import { Toaster, toast } from "sonner";
 import { QrReader } from "react-qr-reader";
+
 const programs = [
   {
     id: 1,
@@ -38,16 +39,19 @@ const programs = [
     id: 2,
     name: "Data Science",
     description: "Analyze and interpret complex data",
+    timeSlots: ["10:00 - 13:00", "14:00 - 17:00"],
   },
   {
     id: 3,
     name: "Cybersecurity",
     description: "Protect systems and networks from digital attacks",
+    timeSlots: ["09:30 - 12:30", "13:30 - 16:30"],
   },
   {
     id: 4,
     name: "AI & Machine Learning",
     description: "Develop intelligent systems and algorithms",
+    timeSlots: ["11:00 - 14:00", "15:00 - 18:00"],
   },
 ];
 
@@ -58,21 +62,15 @@ const VerifierInterface = ({ onVerificationComplete }) => {
   const handleScan = async (data) => {
     if (data) {
       setScanning(false);
-      // Here you would typically make an API call to verify the QR code
-      // For this example, we'll simulate a verification process
       try {
-        // Simulating API call
         await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        // Simulated verification result
         const result = {
-          isValid: Math.random() > 0.5, // Randomly determine if valid
+          isValid: Math.random() > 0.5,
           studentName: "John Doe",
           program: "Software Engineering",
           timeSlot: "09:00 - 12:00",
-          expirationDate: new Date(Date.now() + 86400000).toISOString(), // 24 hours from now
+          expirationDate: new Date(Date.now() + 86400000).toISOString(),
         };
-
         setVerificationResult(result);
         onVerificationComplete(result);
       } catch (error) {
@@ -165,6 +163,7 @@ const TechHubProgramBooking = () => {
     };
     setBookedPrograms([...bookedPrograms, ticket]);
     toggleBooking(program.id);
+    toast.success(`Successfully booked ${program.name}`);
   };
 
   const generateTicketQR = (ticket) => {
@@ -178,19 +177,24 @@ const TechHubProgramBooking = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Tech Hub Program Booking</h1>
-      <div className="mb-4">
-        <Switch
-          id="verifier-toggle"
-          onCheckedChange={(checked) => setIsVerifier(checked)}
-        />
-        <label htmlFor="verifier-toggle" className="ml-2">
-          Switch to {isVerifier ? "Student" : "Verifier"} Mode
-        </label>
-      </div>
-      <WalletDefault />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="container mx-auto px-4 py-8">
+      <nav className="flex flex-wrap items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold">Tech Hub Program Booking</h1>
+        <div className="flex items-center space-x-4 mt-4 sm:mt-0">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="verifier-toggle"
+              onCheckedChange={(checked) => setIsVerifier(checked)}
+            />
+            <label htmlFor="verifier-toggle" className="text-sm">
+              {isVerifier ? "Verifier Mode" : "Student Mode"}
+            </label>
+          </div>
+          <WalletDefault />
+        </div>
+      </nav>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {programs.map((program) => (
           <Card key={program.id} className="w-full">
             <CardHeader>
@@ -198,16 +202,18 @@ const TechHubProgramBooking = () => {
               <CardDescription>{program.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 mb-4">
                 <Switch
                   checked={bookingStates[program.id].isBooking}
                   onCheckedChange={() => toggleBooking(program.id)}
                 />
-                <span>Book Space</span>
+                <span className="text-sm">Book Space</span>
               </div>
               {program.timeSlots && bookingStates[program.id].isBooking && (
-                <div className="mt-4">
-                  <p className="font-semibold mb-2">Select Time Slot:</p>
+                <div>
+                  <p className="font-semibold mb-2 text-sm">
+                    Select Time Slot:
+                  </p>
                   <div className="grid grid-cols-2 gap-2">
                     {program.timeSlots.map((slot) => (
                       <Button
@@ -218,6 +224,7 @@ const TechHubProgramBooking = () => {
                             : "outline"
                         }
                         onClick={() => selectTimeSlot(program.id, slot)}
+                        className="text-xs"
                       >
                         {slot}
                       </Button>
@@ -235,6 +242,7 @@ const TechHubProgramBooking = () => {
                   (program.timeSlots &&
                     !bookingStates[program.id].selectedTimeSlot)
                 }
+                className="w-full"
               >
                 Book Now
               </Button>
@@ -244,9 +252,9 @@ const TechHubProgramBooking = () => {
       </div>
 
       {isConnected && bookedPrograms.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Your Booked Programs</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold mb-6">Your Booked Programs</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {bookedPrograms.map((ticket, index) => (
               <Card key={index} className="w-full">
                 <CardHeader>
@@ -265,7 +273,10 @@ const TechHubProgramBooking = () => {
                 <CardFooter>
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button onClick={() => setSelectedTicket(ticket)}>
+                      <Button
+                        onClick={() => setSelectedTicket(ticket)}
+                        className="w-full"
+                      >
                         View Ticket
                       </Button>
                     </DialogTrigger>
@@ -287,7 +298,7 @@ const TechHubProgramBooking = () => {
       )}
 
       {!isConnected && (
-        <div className="mt-8 text-center">
+        <div className="mt-12 text-center">
           <p className="text-lg">
             Please connect your wallet to book programs and view tickets.
           </p>
@@ -296,9 +307,15 @@ const TechHubProgramBooking = () => {
 
       {isVerifier && (
         <VerifierInterface
-          onVerificationComplete={handleVerificationComplete}
+          onVerificationComplete={(result) => {
+            toast.success(
+              `Verification ${result.isValid ? "successful" : "failed"}`
+            );
+          }}
         />
       )}
+
+      <Toaster />
     </div>
   );
 };
