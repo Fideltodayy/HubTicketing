@@ -129,8 +129,13 @@ I conducted a survey through [this form](https://forms.gle/qe4aR2PnSd8kGERZ6) am
 - **68%** preferred a system that only shares necessary information during security checks.
 
 **Survey Screenshots**:  
-[Privacy concerns](/public/privacy.png)
-[Feedback from Respondents](/public/feedback.png)
+![Privacy concerns](/public/privacy.png)  
+![Feedback from Respondents](/public/feedback.png)
+
+**Project Screenshots**:  
+![Home Page](/public/homepage.png)  
+![QR Code Verification](/public/qrcode_verification.png)  
+![Smart Wallet Integration](/public/smart_wallet.png)
 
 ---
 
@@ -187,6 +192,7 @@ We welcome contributions from the community! If you'd like to contribute:
 **Live Demo:**
 [Hub Ticketing Deployed Solution
 ](https://hub-verifiable-credentials-fideltodayy-fideltodayys-projects.vercel.app/)
+
 **Video Demo:**
 [Watch the Demo Video](https://vimeo.com/1021621558)
 
